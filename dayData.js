@@ -110,7 +110,7 @@ var init = function(data, w, h, current, xScale, yScale, barWidth, colors, margi
         .attr("font-size", "11px")
         .attr("font-weight", "bold")
         .attr("fill", "black")
-        .text(d.name);
+        .text("Name: "+d.name+" Grade: "+d.grade);
 
       })
       .on("mouseout", function() {
