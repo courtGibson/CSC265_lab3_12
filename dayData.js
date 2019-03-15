@@ -26,7 +26,7 @@ gradeDataP.then(function(data)
 
   var yScale = d3.scaleLinear()
                 .domain([0,100])
-                .range([0,height]);
+                .range([height,0]);
 
   var xScale = d3.scaleLinear()
                 .domain([0,4])
@@ -61,7 +61,9 @@ var init = function(data, w, h, current, xScale, yScale, barWidth, colors, margi
   var xAxis  = d3.axisBottom(xScale)
                 .scale(xScale)
                 .tickValues([.5,1.5,2.5,3.5])
-                .tickFormat(["Fred"])
+                .tickFormat(function(d, i){
+                  return data[0].grades[i].name;
+                })
 
 
 
@@ -90,10 +92,10 @@ var init = function(data, w, h, current, xScale, yScale, barWidth, colors, margi
       .data(data[0].grades)
       .enter()
       .append("rect")
-      .attr("height", function(d){return yScale(0);})
+      .attr("height", function(d){return h-yScale(0);})
       .attr("width",barWidth-20)
       .attr("x", function(d, i){return xScale(i+.5);})
-      .attr("y", function(d, i){return h-yScale(d.grade);})
+      .attr("y", function(d, i){return yScale(d.grade);})
       .attr("fill",function(d) {return colors(d.name);})
       .on("mouseover", function(d) {
 
@@ -143,10 +145,10 @@ var update = function(data, w, h, xScale, yScale, barWidth, colors, margins)
     svg.selectAll("rect")
         .data(data[currDay-2].grades)
         .transition()
-        .attr("height", function(d,i){return yScale(d.grade);})
+        .attr("height", function(d,i){return h-yScale(d.grade);})
         .attr("width", barWidth-20)
         .attr("x", function(d, i){return xScale(i+.5);})
-        .attr("y", function(d, i){return h-yScale(d.grade);})
+        .attr("y", function(d, i){return yScale(d.grade);})
         .attr("fill",function(d) {return colors(d.name);})
         .on("mouseover", function(d){d.name})
         .append("title")
@@ -171,10 +173,10 @@ var update = function(data, w, h, xScale, yScale, barWidth, colors, margins)
     svg.selectAll("rect")
         .data(data[currDay].grades)
         .transition()
-        .attr("height", function(d,i){return yScale(d.grade);})
+        .attr("height", function(d,i){return h-yScale(d.grade);})
         .attr("width", barWidth-20)
         .attr("x", function(d, i){return xScale(i+.5);})
-        .attr("y", function(d, i){return h-yScale(d.grade);})
+        .attr("y", function(d, i){return yScale(d.grade);})
         .attr("fill",function(d) {return colors(d.name);})
 
   }
